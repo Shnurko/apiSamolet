@@ -1,10 +1,10 @@
 package com.example.apiSamolet.controllers
 
 import com.example.apiSamolet.models.House
+import com.example.apiSamolet.models.Users
 import com.example.apiSamolet.repositories.HouseRepository
+import com.example.apiSamolet.repositories.UsersRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -14,7 +14,8 @@ import reactor.core.publisher.Mono
 @RequestMapping("/samolet")
 class Controller(
     @Autowired
-    private val rep: HouseRepository
+    private val rep: HouseRepository,
+    private val userRep: UsersRepository
     //private val service: Service
 ) {
     @GetMapping("/{id}")
@@ -39,5 +40,10 @@ class Controller(
     @GetMapping("/{id}/history")
     fun getHouseHistory(@PathVariable("id") id: Int): Flux<House> {
         return rep.getHouseHistory(id)
+    }
+
+    @PostMapping("/user")
+    fun saveUser(@RequestBody user: Users): Mono<Users> {
+        return userRep.save(user)
     }
 }
