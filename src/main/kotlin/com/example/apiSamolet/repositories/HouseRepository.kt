@@ -28,9 +28,10 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
                 "technology, status, article, type, completion_date, land_price, image " +
                 "from house " +
                 "where id = :id " +
-                "order by date"
+                "order by date " +
+                "limit 1"
     )
-    fun getHouse(id: Int): Flux<House>
+    fun getHouse(id: Int): Mono<House>
 
     @Query(
         value = "select distinct on(id) id, date, land_area, area, price, url, " +
@@ -45,4 +46,12 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
     )
     fun getHouses(type: String, article: String,
                   technology: String): Flux<House>
+
+    @Query(
+        value = "select distinct type " +
+                "from house " +
+                "where article like :article " +
+                "order by type"
+    )
+    fun getTypes(article: String): Flux<String>
 }
