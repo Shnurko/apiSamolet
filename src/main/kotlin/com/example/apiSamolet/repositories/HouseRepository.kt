@@ -28,7 +28,7 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
                 "technology, status, article, type, completion_date, land_price, image " +
                 "from house " +
                 "where id = :id " +
-                "order by date " +
+                "order by date desc " +
                 "limit 1"
     )
     fun getHouse(id: Int): Mono<House>
@@ -54,4 +54,13 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
                 "order by type"
     )
     fun getTypes(article: String): Flux<House>
+
+    @Query(
+        value = "select id, date, land_area, area, price, url, " +
+                "technology, status, article, type, completion_date, land_price, image " +
+                "from house " +
+                "where id = :id " +
+                "order by date"
+    )
+    fun getHouseHistory(id: Int): Flux<House>
 }

@@ -35,4 +35,9 @@ class Controller(
     fun getTypes(@RequestParam(required = false, defaultValue = "%") article: String): Flux<House> {
         return rep.getTypes(article)
     }
+
+    @GetMapping("/{id}/history")
+    fun getHouseHistory(@PathVariable("id") id: Int): Flux<House> {
+        return rep.getHouseHistory(id)
+    }
 }
