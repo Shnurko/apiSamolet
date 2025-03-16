@@ -53,5 +53,5 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
                 "where article like :article " +
                 "order by type"
     )
-    fun getTypes(article: String): Flux<String>
+    fun getTypes(article: String): Flux<House>
 }

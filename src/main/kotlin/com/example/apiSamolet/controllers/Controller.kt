@@ -3,6 +3,8 @@ package com.example.apiSamolet.controllers
 import com.example.apiSamolet.models.House
 import com.example.apiSamolet.repositories.HouseRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -29,10 +31,8 @@ class Controller(
         return rep.getHouses(type, article, technology)
     }
 
-    @GetMapping
-    fun getTypes(
-        @RequestParam(required = false, defaultValue = "%") article: String,
-    ): Flux<String> {
+    @GetMapping("/types")//, produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getTypes(@RequestParam(required = false, defaultValue = "%") article: String): Flux<House> {
         return rep.getTypes(article)
     }
 }
