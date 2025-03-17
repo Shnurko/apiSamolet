@@ -1,9 +1,9 @@
 package com.example.apiSamolet.repositories
 
 import com.example.apiSamolet.models.House
+import com.example.apiSamolet.models.Types
 import org.springframework.data.r2dbc.repository.Modifying
 import org.springframework.data.r2dbc.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
@@ -11,16 +11,14 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface HouseRepository : ReactiveCrudRepository<House, Long> {
-    //fun save(house: House): Mono<House>
-    //fun saveAll(house: List<House>): Flux<House>
-    //fun findById(id: Int): Mono<House>
-    //override fun findAll(): Flux<House>
+    @Modifying
+    @Query("update house set image = :image " +
+            "where id = :id")
+    fun updateImage(id: Int?, image: String?): Mono<Int>
 
     @Modifying
-    @Query("UPDATE house SET image = :image WHERE id = :id")
-    fun updateImage(id: Int?, image: String?): Mono<Int>
-    @Modifying
-    @Query("DELETE FROM house WHERE id = :id")
+    @Query("delete from house " +
+            "where id = :id")
     fun delete(id: Int): Mono<Int>
 
     @Query(
@@ -53,7 +51,7 @@ interface HouseRepository : ReactiveCrudRepository<House, Long> {
                 "where article like :article " +
                 "order by type"
     )
-    fun getTypes(article: String): Flux<House>
+    fun getTypes(article: String): Flux<Types>
 
     @Query(
         value = "select id, date, land_area, area, price, url, " +
